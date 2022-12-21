@@ -73,6 +73,7 @@ void PioneerTeleop::initialize()
 
 void PioneerTeleop::stop()
 {
+    ROS_INFO("[PioneerJoy] : Stop Robot");
     geometry_msgs::Twist twist;
     twist.linear.x = 0.0;
     twist.angular.z = 0.0;
@@ -136,6 +137,7 @@ void PioneerTeleop::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
     // Behavior [Cancel]
     if(cancel_button_ == 1)
     {
+        ROS_INFO("[PioneerJoy] : Cancelling via /move_base/cancel ");
         stop();
         cancel();
         return;
@@ -151,6 +153,7 @@ void PioneerTeleop::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
     geometry_msgs::Twist twist;
     if(deadman_triggered_ == 1)
     {
+        ROS_INFO("[PioneerJoy] : Teleop On!");
         should_off_teleop_ = false;
         // Scaling
         twist.angular.z = axis_angular_multiplier_ * float(msg->axes[axis_angular_]);
@@ -165,6 +168,7 @@ void PioneerTeleop::joy_callback(const sensor_msgs::Joy::ConstPtr &msg)
             should_off_teleop_ = true;
         }
         else{
+            ROS_INFO("[PioneerJoy] : Teleop Off !");
             stop();
         }
     }
