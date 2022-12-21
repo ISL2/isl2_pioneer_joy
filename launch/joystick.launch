@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+    Joystick Launch
+    Author : Theppasith N. <tutorgaming@gmail.com>
+    Date : 21-Dec-2022
+-->
+<launch>
+    <!-- Args -->
+    <arg name="joystick_cmd_vel_out" default="/joy/cmd_vel" />
+
+    <!-- Joystick Driver Node -->
+    <node respawn="true" pkg="joy" type="joy_node" name="joy">
+        <param name="dev" type="string" value="/dev/input/js0" />
+        <param name="deadzone" value="0.12" />
+    </node>
+
+    <!-- Teleop Node -->
+    <node pkg="isl2_pioneer_joy" type="pioneer_joy_node" name="joy_teleop" output="screen" respawn="true">
+        <param name="axis_linear" value="1" type="int" />
+        <param name="axis_angular" value="3" type="int" />
+        <param name="scale_linear" value="1.0" type="double" />
+        <param name="scale_angular" value="4.0" type="double" />
+        <remap from="cmd_vel" to="$(arg joystick_cmd_vel_out)" />
+    </node>
+</launch>
